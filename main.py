@@ -10,8 +10,7 @@ import pygame
 
 levels = [10,15,20,25,30]
 maze_generator = [CellularAutomaton, BacktrackingGenerator]
-# maze_solver = [aStar_solver, bfs_solver, dfs_solver]
-maze_solver = [aStar_solver]
+maze_solver = [aStar_solver, bfs_solver, dfs_solver]
 
 def showPNG(grid, img_name):
     """Generate a simple image of the maze."""
