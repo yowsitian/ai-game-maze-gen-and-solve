@@ -10,6 +10,7 @@ def playMaze(text_surface_gen, text_surface_sol, text_surface_level, mazeFile, s
 
   address = "mazes/" + mazeFile
   grid = np.genfromtxt(address, delimiter=',', dtype=int)
+  original_empty_space  = np.count_nonzero(grid == 1)
 
   # define goal and start
   num_rows = len(grid)
@@ -104,7 +105,8 @@ def playMaze(text_surface_gen, text_surface_sol, text_surface_level, mazeFile, s
                                 (margin + height) * row + margin,
                                 width, height])
         
-        
+    image_name = "aStar_"+ mazeFile[:-4] + ".png"
+    pygame.image.save(screen, image_name)   
     clock.tick(60) # set limit to 60 frames per second
     pygame.display.flip() # update screen
           
@@ -115,5 +117,13 @@ def playMaze(text_surface_gen, text_surface_sol, text_surface_level, mazeFile, s
     writer = csv.writer(f)
     writer.writerows(grid)
 
-  print(f"--- finished aStar_{mazeFile} {time.time()-start_t0:.3f} s---")
+  area_explored = round(100 - np.count_nonzero(grid == 1) / original_empty_space * 100, 2)
+  shortest_path = np.count_nonzero(grid == 5)
+  maze_filename = "aStar_" + mazeFile
+  result = [maze_filename, round(time.time()-start_t0, 3), shortest_path, area_explored]
+  with open(f"mazes_solutions/result.csv", "a", newline='') as f_object:
+    writer_object = csv.writer(f_object)
+    writer_object.writerow(result)
+  
+  print(f"-- finished aStar_{mazeFile} {time.time()-start_t0:.3f} s | Shortest Path Count: {shortest_path} | Area Explore: {area_explored} % -- ")
   return interrupt
