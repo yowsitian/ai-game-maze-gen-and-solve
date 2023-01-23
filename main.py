@@ -6,11 +6,11 @@ from maze_solv import bfs_solver
 from maze_solv import dfs_solver
 import matplotlib.pyplot as plt
 import pandas as pd
-import pygame
+import pygame, csv
 
 levels = [10,15,20,25,30]
 maze_generator = [CellularAutomaton, BacktrackingGenerator]
-maze_solver = [aStar_solver, bfs_solver, dfs_solver]
+maze_solver = [aStar_solver, dfs_solver, bfs_solver]
 
 def showPNG(grid, img_name):
     """Generate a simple image of the maze."""
@@ -70,6 +70,15 @@ while not interrupt:
             if event.key==pygame.K_RETURN:
                 run = True
     
+    # Initialize result.csv
+    f = open("mazes_solutions/result.csv", "w")
+    f.truncate()
+    f.close()
+    result_row = ["file", "time", "shortest path count", "area exploration"]
+    with open(f"mazes_solutions/result.csv", "a", newline='') as f_object:
+        writer_object = csv.writer(f_object)
+        writer_object.writerow(result_row)
+    
     for mazeCounter, maze in enumerate(maze_generator):
         text_surface_gen = my_font.render(displayGenerator(mazeCounter), False, (0, 0, 0))  
         if interrupt:
@@ -88,10 +97,11 @@ while not interrupt:
                 maze_width = level
                 maze_height = level
 
-                m.generator = CellularAutomaton(maze_width, maze_height)
+                mazeGenerator = maze_generator[mazeCounter]
+                m.generator = BacktrackingGenerator(maze_width, maze_height)
                 m.generate()
 
-                Maze.set_seed(123)
+                Maze.set_seed(9)
                 png_maze_file = f'mazes/maze_{mazeCounter}_solver_{solverCounter}.png'
                 csv_maze_file = f'mazes/maze_{mazeCounter}_solver_{solverCounter}.csv'
                 showPNG(m.grid, png_maze_file)

@@ -184,7 +184,7 @@ def playMaze(text_surface_gen, text_surface_sol, text_surface_level, mazeFile, s
         for pos in solution:
             grid[pos[0], pos[1]] = 5
         grid[0, 0] = 2
-        grid[-1, -1] = 3
+        grid[-2, -2] = 3
 
         screen.fill(grey) # fill background in grey
         screen.blit(text_surface_gen, (5,500))
