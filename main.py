@@ -34,9 +34,9 @@ def displaySolver(solver):
     if(solver == 0):
         title += "A Star"
     elif(solver == 1):
-        title += "BFS"
-    else:
         title += "DFS"
+    else:
+        title += "BFS"
     return title
 
 # initialize pygame
@@ -91,19 +91,18 @@ while not interrupt:
                 text_surface_level = my_font.render(f'Level {levelCounter+1}', False, (0, 0, 0))    
                 if interrupt:
                     break
+                Maze.set_seed(9)
                 # generate maze
                 m = Maze()
                 # level indicates the size of the map, eg. 20 x 20
                 maze_width = level
                 maze_height = level
 
-                mazeGenerator = maze_generator[mazeCounter]
-                m.generator = BacktrackingGenerator(maze_width, maze_height)
+                m.generator = maze(maze_width, maze_height)
                 m.generate()
 
-                Maze.set_seed(9)
-                png_maze_file = f'mazes/maze_{mazeCounter}_solver_{solverCounter}.png'
-                csv_maze_file = f'mazes/maze_{mazeCounter}_solver_{solverCounter}.csv'
+                png_maze_file = f'mazes/maze_{mazeCounter}_solver_{solverCounter}_level_{level}.png'
+                csv_maze_file = f'mazes/maze_{mazeCounter}_solver_{solverCounter}_level_{level}.csv'
                 showPNG(m.grid, png_maze_file)
 
                 # convert maze to csv without changing the image quality
@@ -115,7 +114,7 @@ while not interrupt:
                 DF.to_csv(csv_maze_file, header=False, index=False)
 
                 # solve maze
-                interrupt = solver.playMaze(text_surface_gen, text_surface_sol, text_surface_level, f'maze_{mazeCounter}_solver_{solverCounter}.csv', screen, clock)
+                interrupt = solver.playMaze(text_surface_gen, text_surface_sol, text_surface_level, f'maze_{mazeCounter}_solver_{solverCounter}_level_{level}.csv', screen, clock)
     break
 
 while not finish:

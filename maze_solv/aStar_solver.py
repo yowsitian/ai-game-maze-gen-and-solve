@@ -105,7 +105,7 @@ def playMaze(text_surface_gen, text_surface_sol, text_surface_level, mazeFile, s
                                 (margin + height) * row + margin,
                                 width, height])
         
-    image_name = "aStar_"+ mazeFile[:-4] + ".png"
+    image_name = "mazes_solutions/aStar_"+ mazeFile[:-4] + ".png"
     pygame.image.save(screen, image_name)   
     clock.tick(60) # set limit to 60 frames per second
     pygame.display.flip() # update screen
